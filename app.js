@@ -259,13 +259,16 @@ function startCoin() {
     art: ["clock-concerns", "borikense"],
   };
 
+  // The glow itself is pure CSS (cardpulse, same clock as coinlabel), so it
+  // fades in/out in lockstep with the label. JS only picks WHICH cards are
+  // armed, swapping the class at edge-on moments while the glow is dark.
   function resonate(idx) {
     const repos = THEME_CARDS[LABELS[idx]] || [];
-    const cards = repos
-      .map((r) => document.querySelector(`.card[data-repo="${r}"]`))
-      .filter(Boolean);
-    cards.forEach((c) => c.classList.add("resonate"));
-    setTimeout(() => cards.forEach((c) => c.classList.remove("resonate")), DUR * 0.3);
+    document.querySelectorAll(".card.resonate").forEach((c) => c.classList.remove("resonate"));
+    repos.forEach((r) => {
+      const card = document.querySelector(`.card[data-repo="${r}"]`);
+      if (card) card.classList.add("resonate");
+    });
   }
 
   let frontIdx = 0;
@@ -275,19 +278,21 @@ function startCoin() {
   // JS only changes the TEXT, and only at edge-on moments (DUR/4 before
   // each landing) while the label is faded out.
   function onCycle() {
-    if (!labelEl.textContent) labelEl.textContent = LABELS[frontIdx];
+    if (!labelEl.textContent) {
+      // very first start: label and pulse both begin lit on the front theme
+      labelEl.textContent = LABELS[frontIdx];
+      resonate(frontIdx);
+    }
     // 0deg: front just landed face-on; back is hidden — safe to swap it
     backIdx = (frontIdx + 1) % faces.length;
     back.src = faces[backIdx];
-    resonate(frontIdx);
-    setTimeout(() => { labelEl.textContent = LABELS[backIdx]; }, DUR * 0.25);
+    setTimeout(() => { labelEl.textContent = LABELS[backIdx]; resonate(backIdx); }, DUR * 0.25);
     setTimeout(() => {
       // 180deg: back is face-on now; front is hidden — safe to swap it
       frontIdx = (backIdx + 1) % faces.length;
       front.src = faces[frontIdx];
-      resonate(backIdx);
     }, DUR * 0.5);
-    setTimeout(() => { labelEl.textContent = LABELS[frontIdx]; }, DUR * 0.75);
+    setTimeout(() => { labelEl.textContent = LABELS[frontIdx]; resonate(frontIdx); }, DUR * 0.75);
   }
 
   inner.addEventListener("animationstart", onCycle);

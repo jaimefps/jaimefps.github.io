@@ -251,12 +251,18 @@ body::before {
   overflow: hidden;
   text-decoration: none;
   transition: transform 0.22s cubic-bezier(0.2, 0.7, 0.2, 1), border-color 0.22s, box-shadow 0.22s;
-  animation: rise 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  /* cardpulse shares the coin label's clock (= coinflip / 2); the glow it
+     drives only shows while the card carries .resonate */
+  animation:
+    rise 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) both,
+    cardpulse 2.6s linear infinite;
 }
-.card:nth-child(1) { animation-delay: 0.08s; }
-.card:nth-child(2) { animation-delay: 0.16s; }
-.card:nth-child(3) { animation-delay: 0.24s; }
-.card:nth-child(4) { animation-delay: 0.32s; }
+/* stagger only the entrance — cardpulse must start undelayed to stay in
+   phase with the coin label */
+.card:nth-child(1) { animation-delay: 0.08s, 0s; }
+.card:nth-child(2) { animation-delay: 0.16s, 0s; }
+.card:nth-child(3) { animation-delay: 0.24s, 0s; }
+.card:nth-child(4) { animation-delay: 0.32s, 0s; }
 
 .card:hover {
   transform: translateY(-3px);
@@ -264,10 +270,26 @@ body::before {
   box-shadow: 0 12px 32px -12px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(240, 168, 75, 0.12);
 }
 
-/* brief amber pulse when the coin lands on this card's theme */
+/* amber pulse when the coin lands on this card's theme. The fade is driven
+   by --pulse, whose keyframes mirror coinlabel exactly, so card glow and
+   label glow rise and fall together; JS only swaps .resonate between cards
+   while both are dark. */
+@property --pulse {
+  syntax: "<number>";
+  inherits: false;
+  initial-value: 0;
+}
+@keyframes cardpulse {
+  0%   { --pulse: 1; }
+  15%  { --pulse: 1; }
+  38%  { --pulse: 0; }
+  62%  { --pulse: 0; }
+  85%  { --pulse: 1; }
+  100% { --pulse: 1; }
+}
 .card.resonate {
-  border-color: rgba(240, 168, 75, 0.45);
-  box-shadow: 0 0 22px -6px rgba(240, 168, 75, 0.35), 0 0 0 1px rgba(240, 168, 75, 0.1);
+  border-color: color-mix(in srgb, rgba(240, 168, 75, 0.45) calc(var(--pulse) * 100%), var(--panel-edge));
+  box-shadow: 0 0 22px -6px rgba(240, 168, 75, calc(var(--pulse) * 0.35)), 0 0 0 1px rgba(240, 168, 75, calc(var(--pulse) * 0.1));
 }
 
 /* while the user is hovering a card, the automatic pulses yield to the cursor */
