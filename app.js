@@ -173,16 +173,8 @@ const MORE = [
   { repo: "slack-paladin", desc: "Slack bot for giving kudos and granting achievements.", lang: "TypeScript" },
   { repo: "decker", desc: "Real-time data displays for your card decks.", lang: "C++" },
   { repo: "use-vanilla-state", desc: "A tiny React state library — a simpler take on the MobX idea.", lang: "TypeScript" },
-  { repo: "sse-py-tsx", desc: "Server-sent events between Python and React, minimal demo.", lang: "Python" },
   { repo: "kysely-stack", desc: "Starter repo: full-stack app with type safety across FE/BE.", lang: "TypeScript" },
   { repo: "pkmn-master-set", desc: "Generate Google Sheets for Pokemon TCG master set collections.", lang: "TypeScript" },
-  { repo: "openai-tic-tac-toe", desc: "Tic-tac-toe against the ChatGPT API.", lang: "TypeScript" },
-  { repo: "set-game", desc: "The card game Set, playable in the browser.", lang: "TypeScript" },
-  { repo: "connect-four", desc: "Connect Four built with useVanillaState().", lang: "TypeScript" },
-  { repo: "demo-fullstack-setup", desc: "Sample Prisma + Nexus + codegen wiring.", lang: "TypeScript" },
-  { repo: "sudoku", desc: "Sudoku checker and solver.", lang: "JavaScript" },
-  { repo: "burger-maker", desc: "Sample code for teaching kids JavaScript.", lang: "JavaScript" },
-  { repo: "node-typescript-jest", desc: "Premade starter for Node.js + TS + Jest projects.", lang: "JavaScript" },
 ];
 
 /* GitHub's standard language colors */
@@ -241,7 +233,7 @@ function startCoin() {
   const back = document.getElementById("coin-back");
   if (!inner || !front || !back) return;
 
-  const faces = ["assets/philosopher.png", "assets/hacker.png", "assets/artist.png"];
+  const faces = ["assets/philosopher.png?v=2", "assets/hacker.png?v=2", "assets/artist.png?v=2"];
   faces.forEach((src) => { new Image().src = src; }); // preload so swaps are instant
 
   // build the coin's thickness: thin circle slices stacked along Z

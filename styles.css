@@ -226,15 +226,6 @@ body::before {
   margin-bottom: 12px;
 }
 .section-label .hash { color: var(--amber); }
-.scroll-hint {
-  margin-left: auto;
-  font-size: 10.5px;
-  color: var(--text-faint);
-  letter-spacing: 0.08em;
-  text-transform: none;
-  animation: nudge 2.4s ease-in-out infinite;
-}
-@keyframes nudge { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(3px); } }
 
 /* ---------- featured cards ---------- */
 
@@ -381,22 +372,12 @@ body::before {
   flex-direction: column;
   gap: 8px;
   padding-right: 6px;
-  padding-bottom: 36px;
   scrollbar-width: thin;
   scrollbar-color: var(--panel-edge) transparent;
-  outline: none;
 }
 .rail-scroll::-webkit-scrollbar { width: 6px; }
 .rail-scroll::-webkit-scrollbar-thumb { background: var(--panel-edge); border-radius: 3px; }
 .rail-scroll::-webkit-scrollbar-thumb:hover { background: var(--text-faint); }
-
-.rail-fade {
-  position: absolute;
-  left: 0; right: 6px; bottom: 0;
-  height: 44px;
-  pointer-events: none;
-  background: linear-gradient(180deg, transparent, var(--ink));
-}
 
 .repo {
   display: block;

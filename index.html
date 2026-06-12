@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300..800&family=IBM+Plex+Mono:ital,wght@0,400;0,500;1,400&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=18" />
+  <link rel="stylesheet" href="styles.css?v=19" />
 </head>
 <body>
   <div class="grain" aria-hidden="true"></div>
@@ -20,8 +20,8 @@
       <div class="identity">
         <div class="coin3d" role="img" aria-label="Spinning pixel-art coin cycling through themes: philosophy, code, art">
           <div class="coin-inner" id="coin-inner">
-            <img class="coin-face coin-front" id="coin-front" src="assets/philosopher.png" alt="" width="56" height="56" />
-            <img class="coin-face coin-back" id="coin-back" src="assets/hacker.png" alt="" width="56" height="56" />
+            <img class="coin-face coin-front" id="coin-front" src="assets/philosopher.png?v=2" alt="" width="56" height="56" />
+            <img class="coin-face coin-back" id="coin-back" src="assets/hacker.png?v=2" alt="" width="56" height="56" />
           </div>
           <span class="coin-label" id="coin-label" aria-hidden="true"></span>
         </div>
@@ -57,10 +57,8 @@
       <aside class="rail" aria-labelledby="rail-label">
         <h2 class="section-label" id="rail-label">
           <span class="hash">##</span> more projects
-          <span class="scroll-hint" aria-hidden="true">scroll&nbsp;↓</span>
         </h2>
-        <div class="rail-scroll" id="rail-list" tabindex="0"><!-- rows injected by app.js --></div>
-        <div class="rail-fade" aria-hidden="true"></div>
+        <div class="rail-scroll" id="rail-list"><!-- rows injected by app.js --></div>
       </aside>
     </main>
 
@@ -71,6 +69,6 @@
     </footer>
   </div>
 
-  <script src="app.js?v=18"></script>
+  <script src="app.js?v=19"></script>
 </body>
 </html>
