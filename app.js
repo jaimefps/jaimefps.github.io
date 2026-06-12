@@ -257,13 +257,13 @@ function startCoin() {
   // shows at 0deg, the back face at 180deg. Images are swapped only while
   // their face points AWAY from the viewer, so a swap can never flicker.
   const labelEl = document.getElementById("coin-label");
-  const LABELS = ["philosophy", "code", "art"]; // parallel to `faces`
+  const LABELS = ["philosophy", "computers", "art"]; // parallel to `faces`
   const DUR = parseFloat(getComputedStyle(inner).animationDuration) * 1000 || 3400;
 
   // each landing pulses the featured cards on that theme
   const THEME_CARDS = {
     philosophy: ["book-graph-explorer"],
-    code: ["pokemon-ai"],
+    computers: ["pokemon-ai"],
     art: ["clock-concerns", "borikense"],
   };
 
