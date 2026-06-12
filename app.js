@@ -226,16 +226,11 @@ function renderRail() {
   ).join("");
 }
 
-/* ---------- persona coin: philosopher / programmer / artist ---------- */
+/* ---------- persona coin: philosopher / programmer ---------- */
 
 function startCoin() {
   const inner = document.getElementById("coin-inner");
-  const front = document.getElementById("coin-front");
-  const back = document.getElementById("coin-back");
-  if (!inner || !front || !back) return;
-
-  const faces = ["assets/philosopher.png?v=2", "assets/hacker.png?v=2", "assets/artist.png?v=2"];
-  faces.forEach((src) => { new Image().src = src; }); // preload so swaps are instant
+  if (!inner) return;
 
   // Phase-lock the shared pulse clock (pulseclock on <body>) to the coin's
   // spin, so "glow lit" lands exactly on "face landed". Both animations sit
@@ -253,18 +248,16 @@ function startCoin() {
     inner.appendChild(slice);
   }
 
-  // Each CSS animation iteration is one full 360deg turn: the front face
-  // shows at 0deg, the back face at 180deg. Images are swapped only while
-  // their face points AWAY from the viewer, so a swap can never flicker.
+  // Each CSS animation iteration is one full 360deg turn: the philosopher
+  // face shows at 0deg, the hacker face at 180deg.
   const labelEl = document.getElementById("coin-label");
-  const LABELS = ["philosophy", "computers", "art"]; // parallel to `faces`
+  const LABELS = ["philosophy", "computers"]; // front face, back face
   const DUR = parseFloat(getComputedStyle(inner).animationDuration) * 1000 || 3400;
 
   // each landing pulses the featured cards on that theme
   const THEME_CARDS = {
-    philosophy: ["book-graph-explorer"],
-    computers: ["pokemon-ai"],
-    art: ["clock-concerns", "borikense"],
+    philosophy: ["book-graph-explorer", "borikense"],
+    computers: ["pokemon-ai", "clock-concerns"],
   };
 
   // The glow itself is pure CSS: card and label both read --pulse from the
@@ -279,28 +272,17 @@ function startCoin() {
     });
   }
 
-  let frontIdx = 0;
-  let backIdx = 1;
-
   // The label's glow is pure CSS (--pulse from the body clock). JS only
   // changes the TEXT, and only at edge-on moments (DUR/4 before each
   // landing) while the label is faded out.
   function onCycle() {
     if (!labelEl.textContent) {
       // very first start: label and pulse both begin lit on the front theme
-      labelEl.textContent = LABELS[frontIdx];
-      resonate(frontIdx);
+      labelEl.textContent = LABELS[0];
+      resonate(0);
     }
-    // 0deg: front just landed face-on; back is hidden — safe to swap it
-    backIdx = (frontIdx + 1) % faces.length;
-    back.src = faces[backIdx];
-    setTimeout(() => { labelEl.textContent = LABELS[backIdx]; resonate(backIdx); }, DUR * 0.25);
-    setTimeout(() => {
-      // 180deg: back is face-on now; front is hidden — safe to swap it
-      frontIdx = (backIdx + 1) % faces.length;
-      front.src = faces[frontIdx];
-    }, DUR * 0.5);
-    setTimeout(() => { labelEl.textContent = LABELS[frontIdx]; resonate(frontIdx); }, DUR * 0.75);
+    setTimeout(() => { labelEl.textContent = LABELS[1]; resonate(1); }, DUR * 0.25);
+    setTimeout(() => { labelEl.textContent = LABELS[0]; resonate(0); }, DUR * 0.75);
   }
 
   inner.addEventListener("animationstart", onCycle);
