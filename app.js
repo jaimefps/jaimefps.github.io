@@ -15,17 +15,26 @@ const A = {
 };
 
 const ART = {
-  /* a sideways eye <) with an iris, watching a Game Boy */
+  /* neural net wired into a Game Boy */
   "pokemon-ai": `
-  <svg viewBox="0 0 420 210" preserveAspectRatio="xMidYMid meet" role="img" aria-label="A sideways eye watching a Game Boy">
-    <!-- eye outline: wedge + arc, like <) -->
-    <path d="M82 105 L156 70 A 40 40 0 0 1 156 140 Z"
-          stroke="${A.line}" stroke-width="2.5" stroke-linejoin="round" fill="none"/>
-    <!-- iris + pupil, set toward the Game Boy -->
-    <circle cx="151" cy="105" r="13" stroke="${A.line}" stroke-width="2" fill="none"/>
-    <circle cx="151" cy="105" r="6.5" fill="${A.amber}"/>
-    <!-- gaze: starts at the eye's border -->
-    <path class="art-dash" d="M177 105 H 258" stroke="${A.amber}" stroke-width="2" stroke-dasharray="5 6" fill="none"/>
+  <svg viewBox="0 0 420 210" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Neural network controlling a Game Boy">
+    <g stroke="${A.soft}" stroke-width="2" fill="none">
+      <line x1="78" y1="55" x2="140" y2="85"/>
+      <line x1="78" y1="105" x2="140" y2="85"/>
+      <line x1="78" y1="105" x2="140" y2="125"/>
+      <line x1="78" y1="155" x2="140" y2="125"/>
+      <line x1="140" y1="85" x2="198" y2="105"/>
+      <line x1="140" y1="125" x2="198" y2="105"/>
+    </g>
+    <path class="art-dash" d="M198 105 H 258" stroke="${A.amber}" stroke-width="2" stroke-dasharray="5 6" fill="none"/>
+    <g fill="${A.node}" stroke="${A.line}" stroke-width="2">
+      <circle cx="78" cy="55" r="7"/>
+      <circle cx="78" cy="105" r="7"/>
+      <circle cx="78" cy="155" r="7"/>
+      <circle cx="140" cy="85" r="7"/>
+      <circle cx="140" cy="125" r="7"/>
+    </g>
+    <circle cx="198" cy="105" r="8" fill="${A.amber}"/>
     <g stroke="${A.line}" fill="none" stroke-width="2.5">
       <rect x="258" y="25" width="106" height="160" rx="14"/>
       <rect x="273" y="42" width="76" height="60" rx="4"/>
