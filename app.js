@@ -170,11 +170,12 @@ const FEATURED = [
 const MORE = [
   { repo: "ai-gora", desc: "Agora for AIs — multi-agent debate experiments.", lang: "TypeScript" },
   { repo: "keyforge-counter", desc: "Arduino LED controller for card-game point tracking.", lang: "C++" },
-  { repo: "slack-paladin", desc: "Slack bot for giving kudos and granting achievements.", lang: "TypeScript" },
   { repo: "decker", desc: "Real-time data displays for your card decks.", lang: "C++" },
   { repo: "use-vanilla-state", desc: "A tiny React state library — a simpler take on the MobX idea.", lang: "TypeScript" },
   { repo: "kysely-stack", desc: "Starter repo: full-stack app with type safety across FE/BE.", lang: "TypeScript" },
-  { repo: "pkmn-master-set", desc: "Generate Google Sheets for Pokemon TCG master set collections.", lang: "TypeScript" },
+  { repo: "set-game", desc: "The card game Set, playable in the browser.", lang: "TypeScript" },
+  { repo: "slack-paladin", desc: "Slack bot for giving kudos and granting achievements.", lang: "TypeScript" },
+  { repo: "burger-maker", desc: "Sample code to teach kids about JavaScript.", lang: "JavaScript" },
 ];
 
 /* GitHub's standard language colors */
