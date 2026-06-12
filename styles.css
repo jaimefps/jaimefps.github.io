@@ -23,6 +23,26 @@
 
 html { color-scheme: dark; }
 
+/* ---------- shared pulse clock ----------
+   One animation on <body> drives every "the coin landed" glow: the coin
+   label reads --pulse as its opacity and .card.resonate reads it for its
+   border/shadow, so they cannot drift apart. Lit when a face lands (every
+   half turn of the 5.2s coinflip), dark while edge-on — keep = coinflip / 2.
+   JS phase-locks this clock to the coinflip animation on startup. */
+@property --pulse {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+@keyframes pulseclock {
+  0%   { --pulse: 1; }
+  15%  { --pulse: 1; }
+  38%  { --pulse: 0; }
+  62%  { --pulse: 0; }
+  85%  { --pulse: 1; }
+  100% { --pulse: 1; }
+}
+
 body {
   background: var(--ink);
   color: var(--text);
@@ -31,6 +51,7 @@ body {
   line-height: 1.5;
   min-height: 100vh;
   overflow-x: hidden;
+  animation: pulseclock 2.6s linear infinite;
 }
 
 ::selection { background: var(--amber); color: var(--ink); }
@@ -111,17 +132,8 @@ body::before {
   color: #ffc46e;
   text-shadow: 0 0 10px rgba(240, 168, 75, 0.85), 0 0 22px rgba(240, 168, 75, 0.4);
   pointer-events: none;
-  /* glows in step with the coin: lit when a face lands (every half turn
-     of the 5.2s coinflip), dark while edge-on. Keep = coinflip / 2. */
-  animation: coinlabel 2.6s linear infinite;
-}
-@keyframes coinlabel {
-  0%   { opacity: 1; }
-  15%  { opacity: 1; }
-  38%  { opacity: 0; }
-  62%  { opacity: 0; }
-  85%  { opacity: 1; }
-  100% { opacity: 1; }
+  /* lit/dark in step with the coin via the shared body clock */
+  opacity: var(--pulse);
 }
 .coin-inner {
   position: relative;
@@ -251,18 +263,12 @@ body::before {
   overflow: hidden;
   text-decoration: none;
   transition: transform 0.22s cubic-bezier(0.2, 0.7, 0.2, 1), border-color 0.22s, box-shadow 0.22s;
-  /* cardpulse shares the coin label's clock (= coinflip / 2); the glow it
-     drives only shows while the card carries .resonate */
-  animation:
-    rise 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) both,
-    cardpulse 2.6s linear infinite;
+  animation: rise 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) both;
 }
-/* stagger only the entrance — cardpulse must start undelayed to stay in
-   phase with the coin label */
-.card:nth-child(1) { animation-delay: 0.08s, 0s; }
-.card:nth-child(2) { animation-delay: 0.16s, 0s; }
-.card:nth-child(3) { animation-delay: 0.24s, 0s; }
-.card:nth-child(4) { animation-delay: 0.32s, 0s; }
+.card:nth-child(1) { animation-delay: 0.08s; }
+.card:nth-child(2) { animation-delay: 0.16s; }
+.card:nth-child(3) { animation-delay: 0.24s; }
+.card:nth-child(4) { animation-delay: 0.32s; }
 
 .card:hover {
   transform: translateY(-3px);
@@ -270,23 +276,20 @@ body::before {
   box-shadow: 0 12px 32px -12px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(240, 168, 75, 0.12);
 }
 
-/* amber pulse when the coin lands on this card's theme. The fade is driven
-   by --pulse, whose keyframes mirror coinlabel exactly, so card glow and
-   label glow rise and fall together; JS only swaps .resonate between cards
-   while both are dark. */
-@property --pulse {
-  syntax: "<number>";
-  inherits: false;
-  initial-value: 0;
+/* keyboard focus speaks the same amber as hover — otherwise the UA draws its
+   own pale ring, which clashes with the resonate pulse */
+.card:focus-visible,
+.repo:focus-visible,
+.links a:focus-visible {
+  outline: 2px solid rgba(240, 168, 75, 0.7);
+  outline-offset: 2px;
 }
-@keyframes cardpulse {
-  0%   { --pulse: 1; }
-  15%  { --pulse: 1; }
-  38%  { --pulse: 0; }
-  62%  { --pulse: 0; }
-  85%  { --pulse: 1; }
-  100% { --pulse: 1; }
-}
+
+/* amber pulse when the coin lands on this card's theme. The fade reads
+   --pulse straight off the shared body clock — the same value the coin
+   label uses for its opacity — so card glow and label glow rise and fall
+   together by construction; JS only swaps .resonate between cards while
+   both are dark. */
 .card.resonate {
   border-color: color-mix(in srgb, rgba(240, 168, 75, 0.45) calc(var(--pulse) * 100%), var(--panel-edge));
   box-shadow: 0 0 22px -6px rgba(240, 168, 75, calc(var(--pulse) * 0.35)), 0 0 0 1px rgba(240, 168, 75, calc(var(--pulse) * 0.1));

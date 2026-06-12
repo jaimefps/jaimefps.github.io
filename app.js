@@ -237,6 +237,14 @@ function startCoin() {
   const faces = ["assets/philosopher.png?v=2", "assets/hacker.png?v=2", "assets/artist.png?v=2"];
   faces.forEach((src) => { new Image().src = src; }); // preload so swaps are instant
 
+  // Phase-lock the shared pulse clock (pulseclock on <body>) to the coin's
+  // spin, so "glow lit" lands exactly on "face landed". Both animations sit
+  // on static elements and normally start in the same style flush, but this
+  // makes the alignment a guarantee rather than a coincidence.
+  const flip = inner.getAnimations().find((a) => a.animationName === "coinflip");
+  const clock = document.body.getAnimations().find((a) => a.animationName === "pulseclock");
+  if (flip && clock && flip.startTime !== null) clock.startTime = flip.startTime;
+
   // build the coin's thickness: thin circle slices stacked along Z
   for (let z = -4; z <= 4; z++) {
     const slice = document.createElement("div");
@@ -259,9 +267,9 @@ function startCoin() {
     art: ["clock-concerns", "borikense"],
   };
 
-  // The glow itself is pure CSS (cardpulse, same clock as coinlabel), so it
-  // fades in/out in lockstep with the label. JS only picks WHICH cards are
-  // armed, swapping the class at edge-on moments while the glow is dark.
+  // The glow itself is pure CSS: card and label both read --pulse from the
+  // single body clock, so they fade in lockstep. JS only picks WHICH cards
+  // are armed, swapping the class at edge-on moments while the glow is dark.
   function resonate(idx) {
     const repos = THEME_CARDS[LABELS[idx]] || [];
     document.querySelectorAll(".card.resonate").forEach((c) => c.classList.remove("resonate"));
@@ -274,9 +282,9 @@ function startCoin() {
   let frontIdx = 0;
   let backIdx = 1;
 
-  // The label's glow is pure CSS (coinlabel), locked to the coin's clock.
-  // JS only changes the TEXT, and only at edge-on moments (DUR/4 before
-  // each landing) while the label is faded out.
+  // The label's glow is pure CSS (--pulse from the body clock). JS only
+  // changes the TEXT, and only at edge-on moments (DUR/4 before each
+  // landing) while the label is faded out.
   function onCycle() {
     if (!labelEl.textContent) {
       // very first start: label and pulse both begin lit on the front theme
